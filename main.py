@@ -4,7 +4,7 @@ from utils import cities_alphabetical
 import tkinter as tk
 from tkinter import filedialog
 import cv2
-from tensorflow.keras.models import load_model # type: ignore
+from keras.models import load_model # type: ignore
 
 def imgToLabel(app, url):
     img = cv2.imread(url)   
@@ -16,7 +16,6 @@ def imgToLabel(app, url):
     probabilities = output[indexes]
     return indexes, probabilities
 
-
 def onAppStart(app):
     app.state = 'menu'
     app.stuff = None
@@ -27,6 +26,12 @@ def onAppStart(app):
     app.imageUrl = ''
     app.x = 0
     app.y = 0
+    app.i = 0
+    app.i1 = 0
+    app.r = 0
+    app.r1 = 0
+    app.o1 = 0
+    app.o = 0
 
 def onMousePress(app, x, y):
     if app.state == 'menu':
@@ -54,6 +59,10 @@ def onMousePress(app, x, y):
             app.state = 'load'
             app.menuSelection = 0
             app.loadSelection = 0
+    elif app.state == 'info':
+        if 160 <= x <= 440 and 400 <= y <= 500:
+            app.state = 'menu'
+            app.menuSelection = 0
 
 def onKeyPress(app, key):
     if key == 'down':
@@ -74,6 +83,8 @@ def onKeyPress(app, key):
                 app.state = 'info'
             else:
                 exit()
+        if app.state == 'info':
+            app.state = 'menu'
         elif app.state == 'load':
             if app.loadSelection == 0:
                 if fileSelection(app):
@@ -137,6 +148,30 @@ def drawOptionsLoad(app):
             drawRect(centerX, centerY, cellWidth, cellHeight, fill=None, border="gray", borderWidth=3,align='center')
             drawLabel(name[i], centerX, centerY, size=25, fill="skyblue", align="center", bold=True)
 
+def drawOptionsInfo(app):
+    explanation_text = [
+        "Welcome to the City Predictor!",
+        "This program analyzes images to predict the city where the photo was taken.",
+        "Made by: Salman Hajizada, Abdulrahman Al-Taweel, Ravin Kumar",
+    ]
+    name = ["Back"]
+    centerX = app.width / 2
+    cellWidth = 280
+    cellHeight = 80
+    for i,_ in enumerate(explanation_text):
+        drawLabel(explanation_text[i], 300, 80 + i*50, size=20 - i*4,fill="steelblue",bold = True)
+        
+
+    for i, _ in enumerate(name):
+        centerY = 450 + i*150
+
+        if i == app.loadSelection:
+            drawRect(centerX, centerY, cellWidth + 15, cellHeight + 15, fill=None, border="skyblue",borderWidth=5, align='center')
+            drawLabel(name[i], centerX, centerY, size=30, fill="skyblue", align="center", bold=True)  
+        else:
+            drawRect(centerX, centerY, cellWidth, cellHeight, fill=None, border="gray", borderWidth=3,align='center')
+            drawLabel(name[i], centerX, centerY, size=25, fill="skyblue", align="center", bold=True)
+
 def onMouseMove(app, x, y):
     if app.state == 'menu':
         if 160 <= x <= 440:
@@ -153,7 +188,11 @@ def onMouseMove(app, x, y):
                 app.loadSelection = 0
             elif 390 <= y <= 460:
                 app.loadSelection = 1
-        
+
+    elif app.state == 'info':
+        if 160 <= x <= 440 and 390 <= y <= 460:
+            app.loadSelection = 0
+
 def redrawAll(app): 
     if app.state == "menu":
         drawLabel("City Predictor", 300, 80, size=50,fill="steelblue",bold = True)
@@ -162,7 +201,7 @@ def redrawAll(app):
         drawLabel("Load the Image", 300, 80, size=50,fill="steelblue",bold = True)
         drawOptionsLoad(app)
     elif app.state == "info":
-        pass
+        drawOptionsInfo(app)
     elif app.state == "image":
         # Draw prediction title
         drawLabel("Prediction", 300, 50, size=50, fill="steelblue", align="center",bold = True)
@@ -177,22 +216,21 @@ def redrawAll(app):
         cities = [app.cities[i] for i in indexes]
 
         drawLabel("The image is from...", 450, 175, size=20, fill="black")
+        drawLabel("The image is from...", 450, 175, size=20, fill="black")
         drawLabel(f"{cities[0]} : {100*probs[0]:.3f}%", 450, 225, size=20, fill="black")
+        
         
         # Draw top predicted city and probability
         count = -1
-        drawLabel("It could also be from:", 450, 275, size=18)
         for i, city in enumerate(cities[1:]):
             if probs[i+1] >= 0.05:
                 count+=1
+                drawLabel("It could also be from:", 450, 275, size=18)
                 drawLabel(f"{i+1}. {cities[i+1]} : {100*probs[i+1]:.3f}%", 450, 325 + count*50, size=18)
 
         # Draw back button
         drawRect(300, 500, 280 + 15, 80 + 15, fill=None, border="skyblue",borderWidth=5, align='center')
         drawLabel("Back", 300, 500, size=30, fill="skyblue", align="center", bold=True)  
-        # drawRect(300, 500, 280, 80, align='center', border='black', fill='yellow')
-        # drawLabel("Back", 300, 500, size=25)
-
 
 if __name__ == "__main__":
     runApp(600, 600)
