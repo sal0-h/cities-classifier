@@ -41,4 +41,4 @@ The dataset used to train the model was scraped from DuckDuckGo. The scraping fi
 
 ## Acknowledgements
 
-This project was a group effort with Ravin Kumar and Abdulrahman Taweel.
+This project was a group effort with [Ravin Kumar](https://github.com/Ravin-Kumar) and [Abdulrahman Taweel](https://github.com/Aboud04).
