@@ -4,10 +4,7 @@ from utils import cities_alphabetical
 import tkinter as tk
 from tkinter import filedialog
 import cv2
-from skimage.feature import hog
-import shelve
 from tensorflow.keras.models import load_model # type: ignore
-import numpy as np
 
 def imgToLabel(app, url):
     img = cv2.imread(url)   
@@ -26,7 +23,7 @@ def onAppStart(app):
     app.menuSelection = 0
     app.loadSelection = 0
     app.cities = cities_alphabetical()
-    app.model = load_model("convnext_model.keras")
+    app.model = load_model("cities_classifier.keras")
     app.imageUrl = ''
     app.x = 0
     app.y = 0
