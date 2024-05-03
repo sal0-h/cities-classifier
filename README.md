@@ -35,6 +35,8 @@ To run the classifier, run the python file `main.py` by running the command:
 
 `$ python main.py`
 
+Make sure the model is in the same directory as the main file and is named `cities_classifier.keras`
+
 ## Dataset
 
 The dataset used to train the model was scraped from DuckDuckGo. The scraping files are included and can be found [here](https://www.kaggle.com/datasets/salmanhajizada/images-of-major-capital-cities).
