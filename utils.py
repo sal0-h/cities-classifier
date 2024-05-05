@@ -1,10 +1,4 @@
-import requests
-import io
-import os, time
-import shelve
 import pandas as pd
-import threading
-from PIL import Image
 
 # Creates a dataframe with country, city and population
 def cities_df():
