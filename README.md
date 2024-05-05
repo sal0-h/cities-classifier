@@ -3,6 +3,10 @@
 
 City Classifier is a query answering machine that uses a machine learning model to classify images based on the city of origin. It uses a Convolutional Neural Network (CNN) to classify cities with over 80% accuracy.
 
+The complete code for creating and training the model is included in the notebook `QuAM_report.ipynb`. This notebook also demonstrates the process of data wrangling, feature engineering and iterations of trying out different models.
+
+The scraper used to download the images can also be found in this repo - `image_scraper.py` scrapes the urls of images while `image_downloader.py` downloads the images from the scraped urls.
+
 ## Installation
 
 City Classifier requires Python 3.10 or above which can be downloaded from [the official Python webpage](https://www.python.org/downloads/).
